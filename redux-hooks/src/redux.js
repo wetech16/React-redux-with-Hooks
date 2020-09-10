@@ -5,7 +5,7 @@ const initialState = {
   todos: [
     {
       id: uuidv4(),
-      name: 'Read a bit',
+      name: 'Connect',
       complete: true
     },
     {

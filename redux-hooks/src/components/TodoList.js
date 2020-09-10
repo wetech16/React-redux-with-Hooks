@@ -1,12 +1,17 @@
-import React from "react";
-import { useSelector, useDispatch} from 'react-redux';
-import {toggleTodoComplete, deleteTodoAction} from '../redux';
+import React from 'react';
+import { connect } from 'react-redux';
+import { toggleTodoComplete, deleteTodoAction } from '../redux';
 
-export default () => {
-  const todos = useSelector((state) => state.todos);
-  const dispatch = useDispatch();
-  const toggleTodo = (todoId) => dispatch(toggleTodoComplete(todoId));
-  const deleteTodo = (todoId) => dispatch(deleteTodoAction(todoId));
+const TodoList = (props) => {
+  const { todos } = props;
+
+  const toggleComplete = (todoId) => {
+    props.toggleTodoComplete(todoId);
+  };
+  const deleteTodo = (todoId) => {
+    props.deleteTodoAction(todoId);
+  };
+
   return (
     <ul className="todo-list">
       {todos.map((todo) => (
@@ -14,7 +19,7 @@ export default () => {
           <input
             type="checkbox"
             checked={todo.complete}
-            onChange={toggleTodo.bind(null, todo.id)}
+            onChange={toggleComplete.bind(null, todo.id)}
           />
           <span className={todo.complete ? 'complete' : null}>{todo.name}</span>
           <span
@@ -28,3 +33,12 @@ export default () => {
     </ul>
   );
 };
+
+const mapStateToProps = (state) => ({
+  todos: state.todos
+});
+
+export default connect(
+  mapStateToProps,
+  { toggleTodoComplete, deleteTodoAction }
+)(TodoList);
